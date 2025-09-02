@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ফকির চাঁদ কলেজ ক্যান্টিন - নতুন মেনু</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Baloo+Da+2:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --header-bg: #d32f2f; /* Deep Red */
+            --header-text: #ffffff;
+            --total-bg: #2e7d32;   /* Deep Green */
+            --total-text: #ffffff;
+            --row-even-bg: #fbe9e7; /* Light Red tint */
+            --row-odd-bg: #ffffff;
+            --text-dark: #333;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #ffffff;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            overflow: hidden; /* Ensures the header's top corners are rounded */
+        }
+
+        header {
+            background-color: var(--header-bg);
+            color: var(--header-text);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px; /* Space between logo and text */
+        }
+        
+        .college-logo {
+            height: 65px; /* Adjust logo size */
+            width: auto;
+            border: 2px solid #fff;
+        }
+
+        .header-text {
+            text-align: left;
+        }
+
+        header h1 {
+            font-family: 'Baloo Da 2', cursive;
+            margin: 0;
+            font-size: 2.2em; /* Adjusted size */
+            letter-spacing: 1px;
+        }
+        
+        .sub {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        thead tr {
+            background-color: #f2f2f2;
+        }
+
+        th {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--header-bg);
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: var(--row-even-bg);
+        }
+        tbody tr:nth-child(odd) {
+            background-color: var(--row-odd-bg);
+        }
+        tbody tr:hover {
+            background-color: #ffd8d2;
+        }
+
+        .item-name {
+            font-weight: 500;
+            font-size: 1.1em;
+        }
+
+        .price {
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--header-bg);
+        }
+
+        .total-section {
+            background-color: var(--total-bg);
+            color: var(--total-text);
+            padding: 20px;
+            text-align: right;
+            margin-top: -1px;
+        }
+
+        .total-section h2 {
+            margin: 0;
+            font-size: 2em;
+            font-weight: 700;
+        }
+        
+        footer {
+            background-color: #f1f1f1;
+            padding: 15px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            th, td { padding: 12px 8px; font-size: 0.9em; }
+            .college-logo { height: 50px; }
+            header h1 { font-size: 1.6em; }
+            .sub { font-size: 0.8em; }
+            .total-section h2 { font-size: 1.5em; }
+            input[type="number"] { width: 50px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-content">
+            <img src="logo.png" alt="College Logo" class="college-logo">
+            <div class="header-text">
+                <h1>ফকির চাঁদ কলেজ ক্যান্টিন</h1>
+                <div class="sub">Quantity Select করুন এবং মোট বিল দেখতে নীচে Scroll করুন</div>
+            </div>
+        </div>
+    </header>
+
+    <table>
+        <thead>
+            <tr>
+                <th>খাবার (Item)</th>
+                <th>দাম (Price)</th>
+                <th>পরিমাণ (Quantity)</th>
+            </tr>
+        </thead>
+        <tbody id="menu-items">
+            </tbody>
+    </table>
+
+    <div class="total-section">
+        <h2>মোট বিল: <span id="grand-total">₹0.00</span></h2>
+    </div>
+    
+    <footer>©"Keep the College Campus Clean — With regards, Fakir Chand College NSS Unit</footer>
+</div>
+
+<script>
+    // আপনার দেওয়া নতুন মেনু
+    const menuData = [
+        { name: "চা (দুধ)", price: 6.00 },
+        { name: "চা (লিকার)", price: 5.00 },
+        { name: "বিস্কুট", price: 3.00 },
+        { name: "কফি", price: 12.00 },
+        { name: "মুড়ি + ঘুগনি", price: 15.00 },
+        { name: "ঘুগনি", price: 10.00 },
+        { name: "আলুর দম", price: 10.00 },
+        { name: "ভেজ চাউমিন", price: 50.00 },
+        { name: "চিকেন চাউমিন", price: 90.00 },
+        { name: "ডিম টোস্ট", price: 22.00 },
+        { name: "ডিম সিদ্ধ", price: 10.00 },
+        { name: "ভেজিটেবিল চপ", price: 8.00 },
+        { name: "এগরোল", price: 30.00 },
+        { name: "চিকেন পকোড়া", price: 15.00 },
+        { name: "সবজি ভাত", price: 40.00 },
+        { name: "মাছ ভাত", price: 60.00 },
+        { name: "চিকেন ভাত", price: 100.00 },
+        { name: "মটন ভাত", price: 350.00 },
+        { name: "মাছ থালি (ভাত, ডাল, সবজি, ভাজা)", price: 65.00 },
+        { name: "লুচি (৪ পিস) + তরকারি", price: 20.00 },
+        { name: "বাটার টোস্ট", price: 20.00 }
+    ];
+    
+    const menuItemsContainer = document.getElementById('menu-items');
+    const grandTotalElement = document.getElementById('grand-total');
+
+    // মেনু আইটেম টেবিলে যোগ করার কোড
+    menuData.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="item-name">${item.name}</td>
+            <td class="price">₹${item.price.toFixed(2)}</td>
+            <td>
+                <input type="number" class="quantity" min="0" value="0" data-price="${item.price}" aria-label="${item.name} quantity">
+            </td>
+        `;
+        menuItemsContainer.appendChild(row);
+    });
+
+    // মোট বিল হিসাব করার ফাংশন
+    function calculateTotal() {
+        let grandTotal = 0;
+        document.querySelectorAll('.quantity').forEach(input => {
+            const price = parseFloat(input.dataset.price);
+            const quantity = parseInt(input.value) || 0; // Use 0 if input is empty
+            grandTotal += price * quantity;
+        });
+        grandTotalElement.textContent = `₹${grandTotal.toFixed(2)}`;
+    }
+
+    // পরিমাণ পরিবর্তন হলে বিল আপডেট করার কোড
+    document.querySelectorAll('.quantity').forEach(input => {
+        input.addEventListener('input', calculateTotal);
+    });
+</script>
+
+</body>
+</html>
